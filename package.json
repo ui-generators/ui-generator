@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/clerk-sdk-node": "^4.13.15",
     "@clerk/nextjs": "^4.29.12",
     "@clerk/themes": "^1.7.12",
     "@fluentui/react": "^8.117.1",
