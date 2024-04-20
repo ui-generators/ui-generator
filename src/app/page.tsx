@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import Form, { FormInput } from '../components/form';
+import { generatePrompt } from '../app/prompt';
+import { fetchFromOpenAI } from '../app/fetchFromOpenAI';
 
 
 const Home: React.FC = () => {
@@ -9,6 +11,11 @@ const Home: React.FC = () => {
   const [blobUrls, setBlobUrls] = useState<string[]>([]);
 
   const handleSubmit = async (formInput: FormInput): Promise<void> => {
+
+    const prompt = generatePrompt(formInput);
+    const generatedCode = await fetchFromOpenAI(prompt);
+    console.log(generatedCode);
+
     // doing simple generation using only some of the user inputs for placeholder purposes
     const baseCode = `<html><body style="background-color:${formInput.colorScheme};"><h1>${formInput.pageTitle}</h1><p>${formInput.content}</p></body></html>`;
     const variations = [
