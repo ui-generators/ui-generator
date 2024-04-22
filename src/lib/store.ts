@@ -1,11 +1,11 @@
 // Reference: https://redux.js.org/usage/nextjs
 import { configureStore } from '@reduxjs/toolkit';
-import persistedReducer from './features/result/content';
+import contentReducer from './features/result/content';
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
-            content: persistedReducer,
+            content: contentReducer,
         },
     });
 };

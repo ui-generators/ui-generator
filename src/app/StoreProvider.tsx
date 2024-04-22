@@ -3,8 +3,8 @@
 import { useRef } from 'react'
 import { Provider } from 'react-redux'
 import { makeStore, AppStore } from '../lib/store'
-import { persistStore } from 'redux-persist';
-import { PersistGate } from 'redux-persist/integration/react';
+// import { persistStore } from 'redux-persist';
+// import { PersistGate } from 'redux-persist/integration/react';
 
 export default function StoreProvider({
     children
@@ -22,13 +22,13 @@ export default function StoreProvider({
         return <div>Error: Redux store not initialized</div>;
     }
 
-    const persistor = persistStore(storeRef.current);
+    // const persistor = persistStore(storeRef.current);
 
     return (
         <Provider store={storeRef.current}>
-            <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
-                {children}
-            </PersistGate>
+            {/* <PersistGate loading={<div>Loading...</div>} persistor={persistor}> */}
+            {children}
+            {/* </PersistGate> */}
         </Provider>
     );
 }

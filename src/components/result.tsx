@@ -35,6 +35,8 @@ const Result: React.FC<{}> = () => {
     const [hasStyle, setHasStyle] = useState<boolean>(false);
     const router = useRouter();
     const { index } = router.query;
+    const [code, setCode] = useState<string>("");
+    const [url, setUrl] = useState<string>("");
 
     const handleToggleChange = (event: React.MouseEvent<HTMLElement, MouseEvent>, checked?: boolean) => {
         if (checked != undefined) {
@@ -56,21 +58,30 @@ const Result: React.FC<{}> = () => {
     //     );
     // }
 
-    const code = useAppSelector(state => state.content.pageContents[Number(index)]);
-
-    const store = useAppStore();
-
     useEffect(() => {
-        console.log("Hello" + index + " " + JSON.stringify(store.getState()));
-    }, [store, index]);
+        if (typeof index == "string") {
+            const valueInStorage = localStorage.getItem(String(index));
+            if (valueInStorage != null && valueInStorage.length > 0) { // Check if value in storage is empty string or undefined
+                const objectInStorage = JSON.parse(valueInStorage);
+                setCode(objectInStorage.code);
+                setUrl(objectInStorage.url);
+            }
+        }
+    }, [index]);
 
-    if (code == null) {
-        return (
-            <div>
-                Error fetching result.
-            </div>
-        );
-    }
+    // const store = useAppStore();
+
+    // useEffect(() => {
+    //     console.log("Hello" + index + " " + JSON.stringify(store.getState()));
+    // }, [store, index]);
+
+    // if (code == null) {
+    //     return (
+    //         <div>
+    //             Error fetching result.
+    //         </div>
+    //     );
+    // }
 
     return (
         <div>
@@ -83,7 +94,7 @@ const Result: React.FC<{}> = () => {
                     styles={toggleStyles}
                 />
             )}
-            {isWebPage && <iframe width="70%" height="70%" />}
+            {isWebPage && <iframe src={url} width="70%" height="70%" />}
             {!isWebPage && (
                 <pre className="language-javascript">
                     <code>{code}</code>

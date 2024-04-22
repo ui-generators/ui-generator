@@ -1,33 +1,33 @@
 // Reference: https://redux.js.org/tutorials/essentials/part-2-app-structure
 import { createSlice } from '@reduxjs/toolkit'
-import storage from 'redux-persist/lib/storage'; // Use local storage
-import { persistReducer } from 'redux-persist';
+// import storage from 'redux-persist/lib/storage'; // Use local storage
+// import { persistReducer } from 'redux-persist';
 
-const persistConfig = {
-    key: 'root',
-    storage, // Save to local storage
-};
+// const persistConfig = {
+//     key: 'root',
+//     storage, // Save to local storage
+// };
 
-interface PageContents {
-    [key: number]: string,
-}
+// interface PageContents {
+//     [key: number]: string,
+// }
 
-const pageContents: PageContents = {};
+// const pageContents: PageContents = {};
 
 export const contentSlice = createSlice({
     name: 'content',
     initialState: {
-        pageContents,
+        pageContents: new Map<number, string>(),
     },
     reducers: {
         setPageContent: (state, action) => {
-            state.pageContents[action.payload.index] = action.payload.code;
+            state.pageContents.set(action.payload.index, action.payload.code);
         },
     }
 });
 
-const persistedReducer = persistReducer(persistConfig, contentSlice.reducer);
+// const persistedReducer = persistReducer(persistConfig, contentSlice.reducer);
 
 export const { setPageContent } = contentSlice.actions;
 
-export default persistedReducer;
+export default contentSlice.reducer;

@@ -23,11 +23,14 @@ const Home: React.FC = () => {
         const curIndices: number[] = [];
 
         variations.forEach((code, index) => {
-            const payload = {
+            const blob = new Blob([code], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const data = {
                 code,
-                index,
+                url,
             };
-            store.dispatch(setPageContent(payload));
+            localStorage.setItem(String(index), JSON.stringify(data));
+            // console.log("localstorage " + localStorage.getItem(String(index)));
             curIndices.push(index);
         });
 
