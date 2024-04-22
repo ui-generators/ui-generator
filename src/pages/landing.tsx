@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from 'react';
-import { useAppStore } from '../lib/hooks';
-import Form, { FormInput } from '../components/form';
+import React, { useState, useEffect } from 'react';
+import { useAppStore } from '@/lib/hooks';
+import Form, { FormInput } from '@/components/form';
 import { Link } from '@fluentui/react';
-import { setPageContent } from '@/lib/features/result/content';
+import { getSystemPrompt, getWebpagePrompt } from '@/app/prompt';
+import { fetchFromOpenAI } from '@/app/fetchFromOpenAI';
 
 const Home: React.FC = () => {
     const [indices, setIndices] = useState<number[]>([]);
@@ -30,7 +31,6 @@ const Home: React.FC = () => {
                 url,
             };
             localStorage.setItem(String(index), JSON.stringify(data));
-            // console.log("localstorage " + localStorage.getItem(String(index)));
             curIndices.push(index);
         });
 
@@ -40,10 +40,6 @@ const Home: React.FC = () => {
     const onClickLink = (index: number) => {
         window.open(`/output?index=${index}`);
     };
-
-    // useEffect(() => {
-    //     console.log("Well " + JSON.stringify(store.getState()));
-    // }, [indices]);
 
     return (
         <div>
