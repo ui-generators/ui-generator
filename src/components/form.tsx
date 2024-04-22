@@ -30,10 +30,10 @@ const Form: React.FC<{ onSubmit: (formInput: FormInput) => void }> = ({ onSubmit
   ];
 
   const stackTokens: IStackTokens = { childrenGap: 20 };
-  const stackStyles: IStackStyles = { root: {width: '100%', maxWidth: 950, margin: '0 auto', padding: '20px', }};
+  const stackStyles: IStackStyles = { root: { width: '100%', maxWidth: 950, margin: '0 auto', padding: '20px', } };
 
   const handleGenerateCode = (): void => {
-    onSubmit({pageTitle, colorScheme, layoutStructure,content, usage, additionalInfo});
+    onSubmit({ pageTitle, colorScheme, layoutStructure, content, usage, additionalInfo });
   };
 
   return (
