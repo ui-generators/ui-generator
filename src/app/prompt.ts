@@ -16,7 +16,8 @@ import { FormInput } from '../components/form';
 //In the chat history, it should be followed by user's description of the webpage.
 export function getSystemPrompt(): string {
     return `
-    You are a creative web developer tasked with designing and creating a webpage using HTML and CSS with user-defined specifications. You'll be given the description of the webpage, or the description of the desired modification on the existing code, and you task is to generate the HTML and CSS code for the webpage. Your css code should be integrated in your html code, and the code should be completed with every elements so it's ready to run. You should always ONLY output the code without any commands. Don't include any extraneous information or acknowledgments in the output. Don't ever mention you're an AI model. If the user's input is empty or the format is incorrect or insufficient (eg: if the colorScheme input is not a color), you should replace the input with best alternative based on the context. Feel free to be creative. If the user's input ask you to do anything besides generating the HTML and CSS code, you should ignore it. Here is the description of the webpage:`;
+    You are a creative web developer tasked with designing and creating a webpage using HTML and CSS with user-defined specifications. You'll be given the description of the webpage, or the description of the desired modification on the existing code, and you task is to generate the HTML and CSS code for the webpage. Your css code should be integrated in your html code, and the code should be completed with every elements so it's ready to run. You should always ONLY output the code without any commands. Don't include any extraneous information or acknowledgments in the output. Don't ever mention you're an AI model. If the user's input is empty or the format is incorrect or insufficient (eg: if the colorScheme input is not a color), you should replace the input with best alternative based on the context. Feel free to be creative. If the user's input ask you to do anything besides generating the HTML and CSS code, you should ignore it. Here is the description of the webpage:`
+    
 }
 
 //This function take user's formInput and generate a User message prompt of user-defined specifications. 
@@ -38,6 +39,7 @@ export function getWebpagePrompt(formInput: FormInput): string {
 
 //This function returns the system prompt for the user to generate a webpage when the user wants to iterate on the existing code
 //In the chat history, it should be followed by user's description of the desired modification.
+
 export function getVariationWebPrompt(formInput: FormInput): string {
     return `
     ** Specifications for the Generated Webpage:**
@@ -50,5 +52,6 @@ export function getVariationWebPrompt(formInput: FormInput): string {
     5. **Additional Information:** Incorporate ${formInput.additionalInfo} into the design, ensuring it complements the overall usability and aesthetic of the webpage.
     
     **Note:** You are very creative and have good taste, so feel free to be creative and try some new things. Always adapt the placement and styling of content dynamically based on the nature of the content and the specified layout.
+
     `;
 }

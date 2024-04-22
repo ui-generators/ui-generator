@@ -6,6 +6,7 @@ import Form, { FormInput } from '@/components/form';
 import { Link } from '@fluentui/react';
 import { getSystemPrompt, getWebpagePrompt } from '@/app/prompt';
 import { fetchFromOpenAI } from '@/app/fetchFromOpenAI';
+
 import { OpenAIClient } from 'iterative_prompting_client';
 
 
@@ -22,6 +23,7 @@ const Home: React.FC = () => {
     const store = useAppStore();
 
     const handleSubmit = async (formInput: FormInput): Promise<void> => {
+
 
         const gpt_confirmation_string = await client.initialPrompt(getSystemPrompt());
 
