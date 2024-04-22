@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { useAppSelector, useAppStore } from '../lib/hooks';
+import React, { useState } from 'react';
+import { useAppStore } from '../lib/hooks';
 import Form, { FormInput } from '../components/form';
 import { Link } from '@fluentui/react';
 import { setPageContent } from '@/lib/features/result/content';
@@ -26,7 +26,7 @@ const Home: React.FC = () => {
             const payload = {
                 code,
                 index,
-            }
+            };
             store.dispatch(setPageContent(payload));
             curIndices.push(index);
         });
@@ -38,9 +38,9 @@ const Home: React.FC = () => {
         window.open(`/output?index=${index}`);
     };
 
-    useEffect(() => {
-        console.log("Well " + JSON.stringify(store.getState()));
-    }, [store]);
+    // useEffect(() => {
+    //     console.log("Well " + JSON.stringify(store.getState()));
+    // }, [indices]);
 
     return (
         <div>

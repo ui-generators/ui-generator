@@ -1,10 +1,6 @@
 // Reference: https://redux.js.org/usage/nextjs
 import { configureStore } from '@reduxjs/toolkit';
 import persistedReducer from './features/result/content';
-import { enableMapSet } from 'immer';
-import { persistStore } from 'redux-persist';
-
-enableMapSet(); // Enable MapSet plugin for Immer
 
 export const makeStore = () => {
     return configureStore({
@@ -13,10 +9,6 @@ export const makeStore = () => {
         },
     });
 };
-
-const store = makeStore();
-
-export const persistor = persistStore(store);
 
 // Infer the type of makeStore
 export type AppStore = ReturnType<typeof makeStore>;

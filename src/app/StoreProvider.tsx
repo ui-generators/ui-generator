@@ -3,13 +3,15 @@
 import { useRef } from 'react'
 import { Provider } from 'react-redux'
 import { makeStore, AppStore } from '../lib/store'
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
 
 export default function StoreProvider({
     children
 }: {
     children: React.ReactNode
 }) {
-    const storeRef = useRef<AppStore>()
+    const storeRef = useRef<AppStore>();
     try {
         storeRef.current = makeStore(); // Ensure `makeStore` returns a valid Redux store
     } catch (error) {
@@ -20,5 +22,13 @@ export default function StoreProvider({
         return <div>Error: Redux store not initialized</div>;
     }
 
-    return <Provider store={storeRef.current}>{children}</Provider>
+    const persistor = persistStore(storeRef.current);
+
+    return (
+        <Provider store={storeRef.current}>
+            <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+                {children}
+            </PersistGate>
+        </Provider>
+    );
 }

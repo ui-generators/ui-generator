@@ -24,7 +24,7 @@ export const contentSlice = createSlice({
             state.pageContents[action.payload.index] = action.payload.code;
         },
     }
-})
+});
 
 const persistedReducer = persistReducer(persistConfig, contentSlice.reducer);
 
