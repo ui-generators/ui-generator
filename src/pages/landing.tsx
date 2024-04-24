@@ -5,6 +5,7 @@ import Form, { FormInput } from '@/components/form';
 import { Link } from '@fluentui/react';
 import { getSystemPrompt, getWebpagePrompt } from '@/app/prompt';
 import { client } from '@/constants/api';
+import P5Wrapper from '../components/p5Wrapper';
 
 const Home: React.FC = () => {
     const [indices, setIndices] = useState<number[]>([]);
@@ -18,6 +19,7 @@ const Home: React.FC = () => {
         await client.initialPrompt(systemPrompt);
 
         const webPagePrompt = getWebpagePrompt(formInput);
+
         const baseCode = await client.iterativePrompt(webPagePrompt);
         const variation_1 = await client.iterativePrompt(webPagePrompt);
         const variation_2 = await client.iterativePrompt(webPagePrompt);
@@ -54,6 +56,7 @@ const Home: React.FC = () => {
 
     return (
         <div>
+            <P5Wrapper />
             <Form onSubmit={handleSubmit} submitButtonLoading={submitButtonLoading} />
             {indices.map((index) => (
                 <Link key={index} onClick={() => onClickLink(index)} style={{ display: 'block', margin: '10px' }}>
