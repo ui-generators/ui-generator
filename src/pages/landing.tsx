@@ -7,18 +7,34 @@ import { Link } from '@fluentui/react';
 import { getSystemPrompt, getWebpagePrompt } from '@/app/prompt';
 import { fetchFromOpenAI } from '@/app/fetchFromOpenAI';
 
+import { OpenAIClient } from 'iterative_prompting_client';
+
+
+const client = new OpenAIClient({
+    apiKey: 'put your api here',
+    userId: 'user123',
+    sessionId: 'session123',
+});
+
+
 const Home: React.FC = () => {
     const [indices, setIndices] = useState<number[]>([]);
     // const [blobUrls, setBlobUrls] = useState<string[]>([]);
     const store = useAppStore();
 
     const handleSubmit = async (formInput: FormInput): Promise<void> => {
-        // doing simple generation using only some of the user inputs for placeholder purposes
-        const baseCode = `<html><body style="background-color:${formInput.colorScheme};"><h1>${formInput.pageTitle}</h1><p>${formInput.content}</p></body></html>`;
+
+
+        const gpt_confirmation_string = await client.initialPrompt(getSystemPrompt());
+
+        const baseCode = await client.iterativePrompt(getWebpagePrompt(formInput));
+        const variation_1 = await client.iterativePrompt(getWebpagePrompt(formInput));
+        const variation_2 = await client.iterativePrompt(getWebpagePrompt(formInput));
+
         const variations = [
             baseCode,
-            `${baseCode}<style>body {font-family: Arial;}</style>`,
-            `${baseCode}<footer><p>Third link here...</p></footer>`
+            variation_1,
+            variation_2
         ];
 
         const curIndices: number[] = [];
