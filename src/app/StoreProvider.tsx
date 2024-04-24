@@ -1,10 +1,8 @@
 // Reference: https://redux.js.org/usage/nextjs
 'use client'
-import { useRef } from 'react'
-import { Provider } from 'react-redux'
-import { makeStore, AppStore } from '../lib/store'
-// import { persistStore } from 'redux-persist';
-// import { PersistGate } from 'redux-persist/integration/react';
+import { useRef } from 'react';
+import { Provider } from 'react-redux';
+import { makeStore, AppStore } from '../lib/store';
 
 export default function StoreProvider({
     children
@@ -22,13 +20,9 @@ export default function StoreProvider({
         return <div>Error: Redux store not initialized</div>;
     }
 
-    // const persistor = persistStore(storeRef.current);
-
     return (
         <Provider store={storeRef.current}>
-            {/* <PersistGate loading={<div>Loading...</div>} persistor={persistor}> */}
             {children}
-            {/* </PersistGate> */}
         </Provider>
     );
 }
