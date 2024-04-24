@@ -4,7 +4,7 @@ import { Toggle, IToggleStyles } from '@fluentui/react/lib/Toggle';
 import { useRouter } from 'next/router';
 import Chat from '@/components/chat';
 import { userName, workerName, systemName } from '@/constants/data';
-import { useAppDispatch } from '@/lib/hooks';
+import { useAppStore, useAppDispatch } from '@/lib/hooks';
 import { addChatHistory } from '@/lib/features/result/chat';
 import { Data } from '@/constants/data';
 
@@ -64,13 +64,36 @@ const Result: React.FC<{}> = () => {
         setHasStyle(true);
     }, []);
 
+    const store = useAppStore();
+
     useEffect(() => {
-        if (typeof index == "string") {
+        if (index?.length && index.length > 0) {
             const valueInStorage = localStorage.getItem(String(index));
             if (valueInStorage != null && valueInStorage.length > 0) { // Check if value in storage is empty string or undefined
                 const objectInStorage = JSON.parse(valueInStorage);
                 setCode(objectInStorage.code);
                 setUrl(objectInStorage.url);
+                const systemChat: Data = {
+                    sender: systemName,
+                    message: localStorage.getItem("systemPrompt") || "",
+                };
+                dispatch(addChatHistory({
+                    chatMessage: systemChat,
+                }));
+                const webPageChat: Data = {
+                    sender: userName,
+                    message: localStorage.getItem("webpagePrompt") || "",
+                };
+                dispatch(addChatHistory({
+                    chatMessage: webPageChat,
+                }));
+                const workerChat: Data = {
+                    sender: workerName,
+                    message: objectInStorage.code,
+                };
+                dispatch(addChatHistory({
+                    chatMessage: workerChat,
+                }));
             }
         }
     }, [index]);
@@ -78,30 +101,6 @@ const Result: React.FC<{}> = () => {
     useEffect(() => {
         console.log(JSON.stringify(localStorage.getItem(String(index))));
     }, [code, url]);
-
-    useEffect(() => {
-        const systemChat: Data = {
-            sender: systemName,
-            message: localStorage.getItem("systemPrompt") || "",
-        };
-        dispatch(addChatHistory({
-            chatMessage: systemChat,
-        }));
-        const webPageChat: Data = {
-            sender: userName,
-            message: localStorage.getItem("webpagePrompt") || "",
-        };
-        dispatch(addChatHistory({
-            chatMessage: webPageChat,
-        }));
-        const workerChat: Data = {
-            sender: workerName,
-            message: code,
-        };
-        dispatch(addChatHistory({
-            chatMessage: workerChat,
-        }));
-    }, [index]);
 
     return (
         <div>

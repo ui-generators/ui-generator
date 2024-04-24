@@ -82,6 +82,7 @@ const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: 
                     />}
                     {showChatWindow && (<div style={chatWindowStyle}>
                         {data.map((item) => {
+                            console.log(JSON.stringify(item));
                             const sender = item?.sender;
                             const message = item?.message;
                             if (sender?.length > 0 && message?.length > 0) {
