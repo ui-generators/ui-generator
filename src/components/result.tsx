@@ -1,8 +1,12 @@
 // TODO: Render web page in a component
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Toggle, IToggleStyles } from '@fluentui/react/lib/Toggle';
-import { useAppSelector, useAppStore } from '../lib/hooks';
 import { useRouter } from 'next/router';
+import Chat from '@/components/chat';
+import { userName, workerName, systemName } from '@/constants/data';
+import { useAppDispatch } from '@/lib/hooks';
+import { addChatHistory } from '@/lib/features/result/chat';
+import { Data } from '@/constants/data';
 
 const toggleStyles: IToggleStyles = {
     root: {
@@ -37,10 +41,20 @@ const Result: React.FC<{}> = () => {
     const { index } = router.query;
     const [code, setCode] = useState<string>("");
     const [url, setUrl] = useState<string>("");
+    const webPageRef = useRef<HTMLIFrameElement | null>(null);
+    const [webPageHeight, setWebPageHeight] = useState("300px");
+    const dispatch = useAppDispatch();
 
     const handleToggleChange = (event: React.MouseEvent<HTMLElement, MouseEvent>, checked?: boolean) => {
         if (checked != undefined) {
             setIsWebPage(checked);
+        }
+    };
+
+    // Reference: https://stackoverflow.com/questions/67218249/automatically-adjust-height-of-iframe-using-react-hooks
+    const onLoad = () => {
+        if (webPageRef?.current?.contentWindow) {
+            setWebPageHeight(webPageRef.current.contentWindow.document.body.scrollHeight + "px");
         }
     };
 
@@ -49,14 +63,6 @@ const Result: React.FC<{}> = () => {
     useEffect(() => {
         setHasStyle(true);
     }, []);
-
-    // if (index == null) {
-    //     return (
-    //         <div>
-    //             Invalid index.
-    //         </div>
-    //     );
-    // }
 
     useEffect(() => {
         if (typeof index == "string") {
@@ -69,37 +75,54 @@ const Result: React.FC<{}> = () => {
         }
     }, [index]);
 
-    // const store = useAppStore();
+    useEffect(() => {
+        console.log(JSON.stringify(localStorage.getItem(String(index))));
+    }, [code, url]);
 
-    // useEffect(() => {
-    //     console.log("Hello" + index + " " + JSON.stringify(store.getState()));
-    // }, [store, index]);
-
-    // if (code == null) {
-    //     return (
-    //         <div>
-    //             Error fetching result.
-    //         </div>
-    //     );
-    // }
+    useEffect(() => {
+        const systemChat: Data = {
+            sender: systemName,
+            message: localStorage.getItem("systemPrompt") || "",
+        };
+        dispatch(addChatHistory({
+            chatMessage: systemChat,
+        }));
+        const webPageChat: Data = {
+            sender: userName,
+            message: localStorage.getItem("webpagePrompt") || "",
+        };
+        dispatch(addChatHistory({
+            chatMessage: webPageChat,
+        }));
+        const workerChat: Data = {
+            sender: workerName,
+            message: code,
+        };
+        dispatch(addChatHistory({
+            chatMessage: workerChat,
+        }));
+    }, [index]);
 
     return (
         <div>
             {hasStyle && (
-                <Toggle
-                    onText='Webpage'
-                    offText='Code'
-                    checked={isWebPage}
-                    onChange={handleToggleChange}
-                    styles={toggleStyles}
-                />
+                <div style={{ display: "flex" }}>
+                    <Toggle
+                        onText='Webpage'
+                        offText='Code'
+                        checked={isWebPage}
+                        onChange={handleToggleChange}
+                        styles={toggleStyles}
+                    />
+                </div>
             )}
-            {isWebPage && <iframe src={url} width="70%" height="70%" />}
+            {isWebPage && <iframe onLoad={onLoad} ref={webPageRef} src={url} width="100%" height={webPageHeight} />}
             {!isWebPage && (
                 <pre className="language-javascript">
                     <code>{code}</code>
                 </pre>
             )}
+            <Chat onChangeCode={(c) => setCode(c)} onChangeUrl={(u) => setUrl(u)} />
         </div>
     );
 }
