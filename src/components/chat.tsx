@@ -5,7 +5,7 @@ import {
 } from '@fluentui/react';
 import { Data, userName, workerName } from '@/constants/data';
 import { client } from '@/constants/api';
-import { useAppStore, useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { addChatHistory } from '@/lib/features/result/chat';
 
 const chatWindowStyle = {

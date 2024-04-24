@@ -1,7 +1,7 @@
 import { OpenAIClient } from 'iterative_prompting_client';
 
 export const client = new OpenAIClient({
-    apiKey: 'enter-api-key',
+    apiKey: 'add-api-key',
     userId: 'user123',
     sessionId: 'session123',
 });

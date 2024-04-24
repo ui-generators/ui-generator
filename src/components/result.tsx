@@ -6,6 +6,7 @@ import Chat from '@/components/chat';
 import { userName, workerName, systemName } from '@/constants/data';
 import { useAppDispatch } from '@/lib/hooks';
 import { addChatHistory } from '@/lib/features/result/chat';
+import { Data } from '@/constants/data';
 
 const toggleStyles: IToggleStyles = {
     root: {
@@ -75,19 +76,32 @@ const Result: React.FC<{}> = () => {
     }, [index]);
 
     useEffect(() => {
-        dispatch(addChatHistory({
+        console.log(JSON.stringify(localStorage.getItem(String(index))));
+    }, [code, url]);
+
+    useEffect(() => {
+        const systemChat: Data = {
             sender: systemName,
             message: localStorage.getItem("systemPrompt") || "",
-        }));
+        };
         dispatch(addChatHistory({
+            chatMessage: systemChat,
+        }));
+        const webPageChat: Data = {
             sender: userName,
             message: localStorage.getItem("webpagePrompt") || "",
-        }));
+        };
         dispatch(addChatHistory({
+            chatMessage: webPageChat,
+        }));
+        const workerChat: Data = {
             sender: workerName,
             message: code,
+        };
+        dispatch(addChatHistory({
+            chatMessage: workerChat,
         }));
-    }, [code]);
+    }, [index]);
 
     return (
         <div>
