@@ -96,10 +96,6 @@ const Result: React.FC<{}> = () => {
         }
     }, [index]);
 
-    useEffect(() => {
-        console.log(JSON.stringify(localStorage.getItem(String(index))));
-    }, [code, url]);
-
     return (
         <div>
             {hasStyle && (
