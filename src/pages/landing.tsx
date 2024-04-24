@@ -1,41 +1,35 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useAppStore } from '@/lib/hooks';
 import Form, { FormInput } from '@/components/form';
 import { Link } from '@fluentui/react';
 import { getSystemPrompt, getWebpagePrompt } from '@/app/prompt';
-import { fetchFromOpenAI } from '@/app/fetchFromOpenAI';
-
-import { OpenAIClient } from 'iterative_prompting_client';
-
-
-const client = new OpenAIClient({
-    apiKey: 'put your api here',
-    userId: 'user123',
-    sessionId: 'session123',
-});
-
+import { client } from '@/constants/api';
 
 const Home: React.FC = () => {
     const [indices, setIndices] = useState<number[]>([]);
-    // const [blobUrls, setBlobUrls] = useState<string[]>([]);
-    const store = useAppStore();
+    const [submitButtonLoading, setSubmitButtonLoading] = useState<boolean>(false);
 
     const handleSubmit = async (formInput: FormInput): Promise<void> => {
 
+        setSubmitButtonLoading(true);
 
-        const gpt_confirmation_string = await client.initialPrompt(getSystemPrompt());
+        const systemPrompt = getSystemPrompt();
+        await client.initialPrompt(systemPrompt);
 
-        const baseCode = await client.iterativePrompt(getWebpagePrompt(formInput));
-        const variation_1 = await client.iterativePrompt(getWebpagePrompt(formInput));
-        const variation_2 = await client.iterativePrompt(getWebpagePrompt(formInput));
+        const webPagePrompt = getWebpagePrompt(formInput);
+        const baseCode = await client.iterativePrompt(webPagePrompt);
+        const variation_1 = await client.iterativePrompt(webPagePrompt);
+        const variation_2 = await client.iterativePrompt(webPagePrompt);
 
         const variations = [
             baseCode,
             variation_1,
             variation_2
         ];
+
+        localStorage.setItem("systemPrompt", systemPrompt);
+        localStorage.setItem("webpagePrompt", webPagePrompt);
 
         const curIndices: number[] = [];
 
@@ -51,6 +45,7 @@ const Home: React.FC = () => {
         });
 
         setIndices(curIndices);
+        setSubmitButtonLoading(false);
     };
 
     const onClickLink = (index: number) => {
@@ -59,7 +54,7 @@ const Home: React.FC = () => {
 
     return (
         <div>
-            <Form onSubmit={handleSubmit} />
+            <Form onSubmit={handleSubmit} submitButtonLoading={submitButtonLoading} />
             {indices.map((index) => (
                 <Link key={index} onClick={() => onClickLink(index)} style={{ display: 'block', margin: '10px' }}>
                     Preview {index + 1} (New Tab)

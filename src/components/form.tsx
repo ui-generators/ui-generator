@@ -11,7 +11,7 @@ export interface FormInput {
 }
 
 // basic form
-const Form: React.FC<{ onSubmit: (formInput: FormInput) => void }> = ({ onSubmit }) => {
+const Form: React.FC<{ onSubmit: (formInput: FormInput) => void, submitButtonLoading: boolean }> = ({ onSubmit, submitButtonLoading }) => {
   const [pageTitle, setPageTitle] = useState('');
   const [colorScheme, setColorScheme] = useState('');
   const [layoutStructure, setLayoutStructure] = useState('');
@@ -72,7 +72,7 @@ const Form: React.FC<{ onSubmit: (formInput: FormInput) => void }> = ({ onSubmit
         value={additionalInfo}
         onChange={(_, newValue) => setAdditionalInfo(newValue || '')}
       />
-      <PrimaryButton text="Generate Code" onClick={handleGenerateCode} style={{ marginTop: '20px' }} />
+      <PrimaryButton text={submitButtonLoading ? "Loading..." : "Generate Code"} onClick={submitButtonLoading ? () => {} : handleGenerateCode} style={{ marginTop: '20px' }} />
     </Stack>
   );
 };

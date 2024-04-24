@@ -1,11 +1,11 @@
 // Reference: https://redux.js.org/usage/nextjs
 import { configureStore } from '@reduxjs/toolkit';
-import contentReducer from './features/result/content';
+import chatHistoryReducer from './features/result/chat';
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
-            content: contentReducer,
+            chat: chatHistoryReducer,
         },
     });
 };
