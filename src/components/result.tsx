@@ -4,7 +4,7 @@ import { Toggle, IToggleStyles } from '@fluentui/react/lib/Toggle';
 import { useRouter } from 'next/router';
 import Chat from '@/components/chat';
 import { userName, workerName, systemName } from '@/constants/data';
-import { useAppStore, useAppDispatch } from '@/lib/hooks';
+import { useAppDispatch } from '@/lib/hooks';
 import { addChatHistory } from '@/lib/features/result/chat';
 import { Data } from '@/constants/data';
 
@@ -63,8 +63,6 @@ const Result: React.FC<{}> = () => {
     useEffect(() => {
         setHasStyle(true);
     }, []);
-
-    const store = useAppStore();
 
     useEffect(() => {
         if (index?.length && index.length > 0) {
