@@ -115,7 +115,7 @@ const Result: React.FC<{}> = () => {
                     <code>{code}</code>
                 </pre>
             )}
-            <Chat onChangeCode={(c) => setCode(c)} onChangeUrl={(u) => setUrl(u)} />
+            <Chat onChangeCode={(c) => setCode(c)} onChangeUrl={(u) => setUrl(u)} code={code} />
         </div>
     );
 }
