@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Form, { FormInput } from '@/components/form';
 import { Link } from '@fluentui/react';
-import { getSystemPrompt, getWebpagePrompt } from '@/app/prompt';
+import { getSystemPrompt, getWebpagePrompt, getVariationWebPrompt } from '@/app/prompt';
 import { client } from '@/constants/api';
 import P5Wrapper from '../components/p5Wrapper';
 
@@ -16,13 +16,14 @@ const Home: React.FC = () => {
         setSubmitButtonLoading(true);
 
         const systemPrompt = getSystemPrompt();
+        await client.registerUserSession();
         await client.initialPrompt(systemPrompt);
 
         const webPagePrompt = getWebpagePrompt(formInput);
-
+        const variationPrompt = getVariationWebPrompt(formInput);
         const baseCode = await client.iterativePrompt(webPagePrompt);
-        const variation_1 = await client.iterativePrompt(webPagePrompt);
-        const variation_2 = await client.iterativePrompt(webPagePrompt);
+        const variation_1 = await client.iterativePrompt(variationPrompt);
+        const variation_2 = await client.iterativePrompt(variationPrompt);
 
         const variations = [
             baseCode,

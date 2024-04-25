@@ -7,7 +7,7 @@ import { Data, userName, workerName } from '@/constants/data';
 import { client } from '@/constants/api';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { addChatHistory } from '@/lib/features/result/chat';
-
+import { getSystemPrompt } from '@/app/prompt';
 const chatWindowStyle = {
     width: "500px",
     height: "800px",
@@ -18,7 +18,7 @@ const chatWindowStyle = {
 
 const stackTokens: IStackTokens = { childrenGap: 10 };
 
-const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: string) => void }> = ({ onChangeCode, onChangeUrl }) => {
+const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: string) => void, code: string }> = ({ onChangeCode, onChangeUrl, code }) => {
     const [hasStyle, setHasStyle] = useState<boolean>(false);
     const [userInput, setUserInput] = useState<string>("");
     const [enterLoading, setEnterLoading] = useState<boolean>(false);
@@ -41,7 +41,9 @@ const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: 
         dispatch(addChatHistory(userPayload));
         setEnterLoading(true);
         setUserInput(""); // Clear user input
-        const response = await client.iterativePrompt(userInput);
+        console.log("promptHistory-1:" + client.getPromptHistory(1));
+
+        const response = await client.iterativePrompt(getSystemPrompt() + code + userInput);
         setEnterLoading(false);
         const workerMessage: Data = {
             sender: workerName,
