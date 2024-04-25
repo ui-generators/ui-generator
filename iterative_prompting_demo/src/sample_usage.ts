@@ -26,6 +26,7 @@ const client = new OpenAIClient({
     apiKey: 'dummy-api-key',
     userId: 'user123',
     sessionId: 'session123',
+    temperature: 0.5
 });
 runClient();
 
