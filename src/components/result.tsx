@@ -1,12 +1,6 @@
 // TODO: Render web page in a component
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, forwardRef, Ref } from 'react';
 import { Toggle, IToggleStyles } from '@fluentui/react/lib/Toggle';
-import { useRouter } from 'next/router';
-import Chat from '@/components/chat';
-import { userName, workerName, systemName } from '@/constants/data';
-import { useAppDispatch } from '@/lib/hooks';
-import { addChatHistory } from '@/lib/features/result/chat';
-import { Data } from '@/constants/data';
 
 const toggleStyles: IToggleStyles = {
     root: {
@@ -33,17 +27,11 @@ const toggleStyles: IToggleStyles = {
     },
 };
 
-
-const Result: React.FC<{}> = () => {
+const Result = forwardRef<HTMLDivElement, { code: string; url: string }>(({ code, url }, ref: Ref<HTMLDivElement>) => {
     const [isWebPage, setIsWebPage] = useState<boolean>(true);
     const [hasStyle, setHasStyle] = useState<boolean>(false);
-    const router = useRouter();
-    const { index } = router.query;
-    const [code, setCode] = useState<string>("");
-    const [url, setUrl] = useState<string>("");
     const webPageRef = useRef<HTMLIFrameElement | null>(null);
     const [webPageHeight, setWebPageHeight] = useState("300px");
-    const dispatch = useAppDispatch();
 
     const handleToggleChange = (event: React.MouseEvent<HTMLElement, MouseEvent>, checked?: boolean) => {
         if (checked != undefined) {
@@ -53,8 +41,16 @@ const Result: React.FC<{}> = () => {
 
     // Reference: https://stackoverflow.com/questions/67218249/automatically-adjust-height-of-iframe-using-react-hooks
     const onLoad = () => {
-        if (webPageRef?.current?.contentWindow) {
-            setWebPageHeight(webPageRef.current.contentWindow.document.body.scrollHeight + "px");
+        if (webPageRef?.current?.contentDocument) {
+            const iframeBody = webPageRef.current.contentDocument.body;
+            const iframeHtml = webPageRef.current.contentDocument.documentElement;
+            setWebPageHeight(Math.max(
+                iframeBody.scrollHeight,
+                iframeBody.offsetHeight,
+                iframeHtml.scrollHeight,
+                iframeHtml.offsetHeight,
+                iframeHtml.clientHeight,
+            ) + 'px');
         }
     };
 
@@ -64,40 +60,8 @@ const Result: React.FC<{}> = () => {
         setHasStyle(true);
     }, []);
 
-    useEffect(() => {
-        if (index?.length && index.length > 0) {
-            const valueInStorage = localStorage.getItem(String(index));
-            if (valueInStorage != null && valueInStorage.length > 0) { // Check if value in storage is empty string or undefined
-                const objectInStorage = JSON.parse(valueInStorage);
-                setCode(objectInStorage.code);
-                setUrl(objectInStorage.url);
-                const systemChat: Data = {
-                    sender: systemName,
-                    message: localStorage.getItem("systemPrompt") || "",
-                };
-                dispatch(addChatHistory({
-                    chatMessage: systemChat,
-                }));
-                const webPageChat: Data = {
-                    sender: userName,
-                    message: localStorage.getItem("webpagePrompt") || "",
-                };
-                dispatch(addChatHistory({
-                    chatMessage: webPageChat,
-                }));
-                const workerChat: Data = {
-                    sender: workerName,
-                    message: objectInStorage.code,
-                };
-                dispatch(addChatHistory({
-                    chatMessage: workerChat,
-                }));
-            }
-        }
-    }, [index]);
-
     return (
-        <div>
+        <div ref={ref} >
             {hasStyle && (
                 <div style={{ display: "flex" }}>
                     <Toggle
@@ -115,9 +79,8 @@ const Result: React.FC<{}> = () => {
                     <code>{code}</code>
                 </pre>
             )}
-            <Chat onChangeCode={(c) => setCode(c)} onChangeUrl={(u) => setUrl(u)} code={code} />
         </div>
     );
-}
+});
 
 export default Result;
