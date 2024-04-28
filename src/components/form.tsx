@@ -8,6 +8,7 @@ export interface FormInput {
   content: string;
   usage: string;
   additionalInfo: string;
+  useBootstrap: string;
 }
 
 // basic form
@@ -18,6 +19,7 @@ const Form: React.FC<{ onSubmit: (formInput: FormInput) => void, submitButtonLoa
   const [content, setContent] = useState('');
   const [usage, setUsage] = useState('');
   const [additionalInfo, setAdditionalInfo] = useState('');
+  const [useBootstrap, setUseBootstrap] = useState('use-bootstrap');
 
   const colorSchemeOptions: IDropdownOption[] = [
     { key: 'light', text: 'Light' },
@@ -29,11 +31,16 @@ const Form: React.FC<{ onSubmit: (formInput: FormInput) => void, submitButtonLoa
     { key: 'personalWebPage', text: 'Personal Web Page' },
   ];
 
+  const bootstrapOptions: IDropdownOption[] = [
+    { key: 'use-bootstrap', text: 'Yes' },
+    { key: 'no-bootstrap', text: 'No' },
+  ];
+
   const stackTokens: IStackTokens = { childrenGap: 20 };
   const stackStyles: IStackStyles = { root: { width: '100%', maxWidth: 950, margin: '0 auto', padding: '20px', } };
 
   const handleGenerateCode = (): void => {
-    onSubmit({ pageTitle, colorScheme, layoutStructure, content, usage, additionalInfo });
+    onSubmit({ pageTitle, colorScheme, layoutStructure, content, usage, additionalInfo, useBootstrap });
   };
 
   return (
@@ -64,6 +71,13 @@ const Form: React.FC<{ onSubmit: (formInput: FormInput) => void, submitButtonLoa
         onChange={(_, option) => setUsage(option?.key as string)}
         placeholder="Select Usage Type"
         options={usageOptions}
+      />
+      <Dropdown
+        label="Bootstrap"
+        selectedKey={useBootstrap}
+        onChange={(_, option) => setUseBootstrap(option?.key as string)}
+        placeholder="Select Yes if you want to use the Bootstrap framework"
+        options={bootstrapOptions}
       />
       <TextField
         label="Additional Information"

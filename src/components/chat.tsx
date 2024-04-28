@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent, useRef } from 'react';
 import {
     Stack, IStackTokens, TextField, DefaultButton, PrimaryButton,
     CommandBarButton,
@@ -18,7 +18,7 @@ const chatWindowStyle = {
 
 const stackTokens: IStackTokens = { childrenGap: 10 };
 
-const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: string) => void, code: string }> = ({ onChangeCode, onChangeUrl, code }) => {
+const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: string) => void, code: string, useBootstrap: boolean }> = ({ onChangeCode, onChangeUrl, code, useBootstrap }) => {
     const [hasStyle, setHasStyle] = useState<boolean>(false);
     const [userInput, setUserInput] = useState<string>("");
     const [enterLoading, setEnterLoading] = useState<boolean>(false);
@@ -41,9 +41,8 @@ const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: 
         dispatch(addChatHistory(userPayload));
         setEnterLoading(true);
         setUserInput(""); // Clear user input
-        console.log("promptHistory-1:" + client.getPromptHistory(1));
 
-        const response = await client.iterativePrompt(getSystemPrompt() + code + userInput);
+        const response = await client.iterativePrompt(getSystemPrompt(useBootstrap) + code + userInput);
         setEnterLoading(false);
         const workerMessage: Data = {
             sender: workerName,
@@ -74,7 +73,7 @@ const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: 
     return (
         <div>
             {hasStyle && (
-                <div style={{ position: "fixed", bottom: "20px", right: "20px" }}>
+                <div style={{ position: "fixed", bottom: "20px", right: "20px", overflowY: "auto" }}>
                     {showChatWindow ? <CommandBarButton
                         text="Close Chat"
                         onClick={() => onToggleChatWindow(false)}
@@ -83,12 +82,12 @@ const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: 
                         onClick={() => onToggleChatWindow(true)}
                     />}
                     {showChatWindow && (<div style={chatWindowStyle}>
-                        {data.map((item) => {
+                        {data.map((item, index) => {
                             const sender = item?.sender;
                             const message = item?.message;
                             if (sender?.length > 0 && message?.length > 0) {
                                 return (
-                                    <Stack>
+                                    <Stack key={`message-${index}`}>
                                         <div style={{ fontWeight: "bold", marginBottom: "15px" }}>{sender}</div>
                                         <div style={{ marginBottom: "40px" }}>{message}</div>
                                     </Stack>
