@@ -1,0 +1,79 @@
+/* Main container styling */
+.mainContainer {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f0f8ff; /* Light blue background */
+}
+
+.loginForm {
+  width: 100%;
+  max-width: 500px;
+  padding: 2rem;
+  box-sizing: border-box;
+  font-weight: bold;
+  border-radius: 20px;
+  background: rgba(155, 208, 237, 0.7);
+  backdrop-filter: blur(10px); 
+}
+
+
+
+
+/* Login button styling */
+.loginButton {
+  width: 355px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Google button styling */
+.googleButton {
+  width: 465px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+
+.teaseMessage{
+  margin-top: 2rem;
+  font-size: 0.65rem;
+  font-weight: bold;
+  color: #001f3f; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+
+/* Welcome message styling */
+.welcomeMessage {
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #001f3f; /* Navy color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+/* Register prompt styling */
+.register-prompt span, .register-prompt a {
+  display: inline;
+}
+
+
+.debug {
+  border: 5px solid red; 
+}
