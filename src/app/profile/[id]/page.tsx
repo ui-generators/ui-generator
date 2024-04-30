@@ -26,7 +26,7 @@ const ProfileFeed = async (props: { userId: string }) => {
             <h1>Interface</h1>
             <p>Interface: {ui.query}</p>
             <p>Author: {ui.authorId}</p>
-            <p>Image: {ui.imageUrl}</p>
+            <p>Image: {ui.code}</p>
           </div>
         ))}
       </div>
