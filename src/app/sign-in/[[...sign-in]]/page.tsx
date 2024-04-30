@@ -2,6 +2,10 @@ import { SignIn } from "@clerk/nextjs";
 import { dark, neobrutalism, shadesOfPurple } from "@clerk/themes";
 import styles from "./styles.module.css";
 
+/**
+ * Renders the sign-in page of the UI Generator app.
+ * @returns The sign-in page component.
+ */
 export default function Page() {
   return (
     <div className={styles.mainContainer}>

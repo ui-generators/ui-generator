@@ -20,7 +20,7 @@ model Interface {
   
   query   String        @db.VarChar(255)
   authorId  String
-  imageUrl    String
+  code    String
 
   @@index([authorId])
 

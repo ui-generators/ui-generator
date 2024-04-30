@@ -1,8 +1,11 @@
 import { SignUp } from "@clerk/nextjs";
 import styles from "./styles.module.css";
 
+/**
+ * Renders the sign-up page of the UI Generator app.
+ * @returns The sign-up page component.
+ */
 export default function Page() {
-
   return (
   <div className={styles.mainContainer}>
       <div className={styles.loginForm}>
