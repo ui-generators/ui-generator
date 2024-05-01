@@ -1,3 +1,38 @@
+// Reference: https://khalilstemmler.com/blogs/typescript/eslint-for-typescript/
 {
-  "extends": "next/core-web-vitals"
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    // https://eslint.org/docs/latest/use/configure/configuration-files-deprecated
+    "indent": [
+      "error",
+      4
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "double"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "no-empty": "warn",
+    "no-cond-assign": [
+      "error",
+      "always"
+    ],
+    "for-direction": "off"
+  }
 }
