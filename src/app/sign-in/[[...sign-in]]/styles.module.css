@@ -9,7 +9,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #f0f8ff; /* Light blue background */
+  background: #ffffff; /* Light blue background */
 }
 
 .loginForm {
@@ -22,8 +22,6 @@
   background: rgba(155, 208, 237, 0.7);
   backdrop-filter: blur(10px); 
 }
-
-
 
 
 /* Login button styling */

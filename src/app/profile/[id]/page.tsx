@@ -1,4 +1,4 @@
-"use client";
+
 
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
@@ -12,16 +12,16 @@ export const dynamic = "force-dynamic";
 
 const ProfileFeed = async (props: { userId: string }) => {
   const id = props.userId;
-  const userInterface = await prisma.interface.findMany({
+  const userInterfaces = await prisma.interface.findMany({
     where: { authorId: id },
   });
 
-  if (!userInterface) notFound();
+  if (!userInterfaces) notFound();
 
   return (
     <>
       <div>
-        {userInterface.map((ui) => (
+        {userInterfaces.map((ui) => (
           <div key={ui.id}>
             <h1>Interface</h1>
             <p>Interface: {ui.query}</p>
@@ -44,9 +44,11 @@ const ProfilePage: NextPage<{ username: string }> = async ({ username }) => {
     const users = await clerkClient.users.getUserList({
       limit: 200,
     });
+    
     const user = users.find((user) =>
       user.externalAccounts.find((account) => account.username === username)
     );
+
     if (!user) {
       return notFound();
     }
