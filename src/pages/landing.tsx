@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import Form, { FormInput } from '@/components/form';
-import { getSystemPrompt, getWebpagePrompt } from '@/app/prompt';
-import { client } from '@/constants/api';
-import P5Wrapper from '../components/p5Wrapper';
-import Result from '@/components/result';
-import Chat from '@/components/chat';
-import { userName, systemName, workerName, Data } from '@/constants/data';
-import { useAppDispatch } from '@/lib/hooks';
-import { addChatHistory } from '@/lib/features/result/chat';
+import React, { useState, useRef, useEffect } from "react";
+import Form, { FormInput } from "@/components/form";
+import { getSystemPrompt, getWebpagePrompt } from "@/app/prompt";
+import { client } from "@/constants/api";
+import P5Wrapper from "../components/p5Wrapper";
+import Result from "@/components/result";
+import Chat from "@/components/chat";
+import { userName, systemName, workerName, Data } from "@/constants/data";
+import { useAppDispatch } from "@/lib/hooks";
+import { addChatHistory } from "@/lib/features/result/chat";
 
 const Home: React.FC = () => {
     const [submitButtonLoading, setSubmitButtonLoading] = useState<boolean>(false);
@@ -31,7 +31,7 @@ const Home: React.FC = () => {
         const webPagePrompt = getWebpagePrompt(formInput);
         const baseCode = await client.iterativePrompt(webPagePrompt);
 
-        const blob = new Blob([baseCode], { type: 'text/html' });
+        const blob = new Blob([baseCode], { type: "text/html" });
         const url = URL.createObjectURL(blob);
 
         const systemMessage: Data = {
@@ -40,21 +40,21 @@ const Home: React.FC = () => {
         };
         const systemPayload = {
             chatMessage: systemMessage,
-        }
+        };
         const userMessage: Data = {
             sender: userName,
             message: webPagePrompt,
-        }
+        };
         const userPayload = {
             chatMessage: userMessage,
-        }
+        };
         const workerMessage: Data = {
             sender: workerName,
             message: baseCode,
-        }
+        };
         const workerPayload = {
             chatMessage: workerMessage,
-        }
+        };
         dispatch(addChatHistory(systemPayload));
         dispatch(addChatHistory(userPayload));
         dispatch(addChatHistory(workerPayload));
@@ -68,7 +68,7 @@ const Home: React.FC = () => {
     useEffect(() => {
         if (resultRef.current) {
             const rect = resultRef.current.getBoundingClientRect();
-            window.scrollTo({ top: rect.top + window.scrollY, behavior: 'smooth' });
+            window.scrollTo({ top: rect.top + window.scrollY, behavior: "smooth" });
         }
     }, [code]);
 

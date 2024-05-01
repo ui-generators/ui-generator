@@ -1,18 +1,18 @@
-import React, { useState, useEffect, FormEvent, useRef } from 'react';
+import React, { useState, useEffect, FormEvent } from "react";
 import {
     Stack, IStackTokens, TextField, DefaultButton, PrimaryButton,
     CommandBarButton,
-} from '@fluentui/react';
-import { Data, userName, workerName } from '@/constants/data';
-import { client } from '@/constants/api';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { addChatHistory } from '@/lib/features/result/chat';
-import { getSystemPrompt } from '@/app/prompt';
+} from "@fluentui/react";
+import { Data, userName, workerName } from "@/constants/data";
+import { client } from "@/constants/api";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { addChatHistory } from "@/lib/features/result/chat";
+import { getSystemPrompt } from "@/app/prompt";
 const chatWindowStyle = {
     width: "500px",
     height: "800px",
     backgroundColor: "lightgray",
-    border: '1px solid #000',
+    border: "1px solid #000",
     overflow: "scroll",
 };
 
@@ -34,10 +34,10 @@ const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: 
         const userMessage: Data = {
             sender: userName,
             message: userInput,
-        }
+        };
         const userPayload = {
             chatMessage: userMessage,
-        }
+        };
         dispatch(addChatHistory(userPayload));
         setEnterLoading(true);
         setUserInput(""); // Clear user input
@@ -47,24 +47,24 @@ const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: 
         const workerMessage: Data = {
             sender: workerName,
             message: response,
-        }
+        };
         const workerPayload = {
             chatMessage: workerMessage,
-        }
+        };
         dispatch(addChatHistory(workerPayload));
         onChangeCode(response);
-        const blob = new Blob([response], { type: 'text/html' });
+        const blob = new Blob([response], { type: "text/html" });
         const url = URL.createObjectURL(blob);
         onChangeUrl(url);
-    }
+    };
 
     const onClickClear = () => {
         setUserInput("");
-    }
+    };
 
     const onToggleChatWindow = (windowOpen: boolean) => {
         setShowChatWindow(windowOpen);
-    }
+    };
 
     useEffect(() => {
         setHasStyle(true);
@@ -101,7 +101,7 @@ const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: 
                             multiline
                             resizable={false}
                             styles={{
-                                root: { width: '100%' }, // Explicitly set 100% width
+                                root: { width: "100%" }, // Explicitly set 100% width
                             }}
                             value={userInput ?? ""}
                             onChange={onChangeUserInput}
@@ -114,7 +114,7 @@ const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: 
                 </div>
             )}
         </div>
-    )
-}
+    );
+};
 
 export default Chat;

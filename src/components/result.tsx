@@ -1,20 +1,20 @@
 // TODO: Render web page in a component
-import React, { useState, useEffect, useRef, forwardRef, Ref } from 'react';
-import { Toggle, IToggleStyles } from '@fluentui/react/lib/Toggle';
+import React, { useState, useEffect, useRef, forwardRef, Ref } from "react";
+import { Toggle, IToggleStyles } from "@fluentui/react/lib/Toggle";
 
 const toggleStyles: IToggleStyles = {
     root: {
-        alignItems: 'right',
-        backgroundColor: 'lightgray',
-        border: '1px solid gray',
-        borderRadius: '4px',
-        padding: '8px',
+        alignItems: "right",
+        backgroundColor: "lightgray",
+        border: "1px solid gray",
+        borderRadius: "4px",
+        padding: "8px",
     },
     thumb: {
-        backgroundColor: 'blue', // Color of the thumb
+        backgroundColor: "blue", // Color of the thumb
     },
     pill: {
-        backgroundColor: 'gray',
+        backgroundColor: "gray",
     },
     container: {
 
@@ -23,7 +23,7 @@ const toggleStyles: IToggleStyles = {
 
     },
     label: {
-        fontWeight: 'bold',
+        fontWeight: "bold",
     },
 };
 
@@ -50,7 +50,7 @@ const Result = forwardRef<HTMLDivElement, { code: string; url: string }>(({ code
                 iframeHtml.scrollHeight,
                 iframeHtml.offsetHeight,
                 iframeHtml.clientHeight,
-            ) + 'px');
+            ) + "px");
         }
     };
 
