@@ -165,6 +165,8 @@ const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: 
                 const message = item?.message;
                 if (sender?.length > 0 && message?.length > 0) {
                   return (
+
+                    
                     <Stack key={`message-${index}`}>
                       <div style={{ fontWeight: "bold", marginBottom: "15px" }}>
                         {sender}

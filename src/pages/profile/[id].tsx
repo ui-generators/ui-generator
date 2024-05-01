@@ -1,14 +1,12 @@
-
-
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
+import { Clerk } from "@clerk/backend";
 import { clerkClient } from "@clerk/nextjs";
-import { users } from "@clerk/nextjs/api";
+import { User } from "@clerk/nextjs/api";
 import { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-
-export const dynamic = "force-dynamic";
+import { use, useEffect, useState } from "react";
 
 const ProfileFeed = async (props: { userId: string }) => {
   const id = props.userId;
@@ -34,30 +32,46 @@ const ProfileFeed = async (props: { userId: string }) => {
   );
 };
 
-const ProfilePage: NextPage<{ username: string }> = async ({ username }) => {
-  const [user] = await clerkClient.users.getUserList({
-    username: [username],
-  });
+const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
+  const [user, setUser] = useState<User>();
+
+const clerkClient = new Clerk("frontend_xxx");
+
+  useEffect(() => { 
+    fetchUser().then((fetchedUser) => {
+      setUser(fetchedUser);
+    });
+  }, [username]);
+
+  const fetchUser = async () => {
+    if (!clerkClient) {
+      throw new Error("clerkClient is undefined");
+    }
+
+    if (!clerkClient.users) {
+      throw new Error("users is undefined on clerkClient");
+    }
+
+    if (!clerkClient.users.getUser) {
+      throw new Error("getUser is undefined on clerkClient.users");
+    }
+    
+    const user = await clerkClient.users.getUser(username);
+    return user;
+  };
 
   if (!user) {
-    // if we hit here we need a unsantized username so hit api once more and find the user.
-    const users = await clerkClient.users.getUserList({
-      limit: 200,
-    });
-    
-    const user = users.find((user) =>
-      user.externalAccounts.find((account) => account.username === username)
-    );
-
-    if (!user) {
-      return notFound();
-    }
+    return <div>404 Error</div>;
   }
 
   return (
     <>
       <Head>
-        <title>{user.username ?? user.externalAccounts[0].username}</title>
+        <title>
+          {user
+            ? user.username ?? user.externalAccounts[0].username
+            : "Loading..."}
+        </title>
       </Head>
       <>
         {/* If we want to have a background image, we would set it here */}
@@ -82,6 +96,5 @@ const ProfilePage: NextPage<{ username: string }> = async ({ username }) => {
     </>
   );
 };
-
 
 export default ProfilePage;

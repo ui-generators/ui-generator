@@ -1,6 +1,5 @@
 "use client";
 
-
 import React, { useState, useRef, useEffect } from 'react';
 import Form, { FormInput } from '@/components/form';
 import { getSystemPrompt, getWebpagePrompt } from '@/app/prompt';
@@ -19,11 +18,6 @@ import Image from 'next/image';
 const Home: React.FC = () => {
 
    const { isLoaded, isSignedIn, user } = useUser();
-
-  if (!isLoaded || !isSignedIn) {
-    return null;
-  }
-
   // Define the state variables
   const [submitButtonLoading, setSubmitButtonLoading] =
     useState<boolean>(false);
@@ -34,6 +28,8 @@ const Home: React.FC = () => {
   const resultRef = useRef<HTMLDivElement>(null);
   // Get the dispatch function from Redux store
   const dispatch = useAppDispatch();
+
+
 
   // Define the submit handler for the form
   const handleSubmit = async (formInput: FormInput): Promise<void> => {
@@ -113,11 +109,16 @@ const Home: React.FC = () => {
     }
   }, [code]);
 
+  if (!isLoaded || !isSignedIn) {
+    return (<><div>404 Error</div></>);
+  }
+
+
   // Render the component
   return (
     <div>
       <div className="pr-2 w-10 h-auto relative inline-block cursor-pointer">
-        <Link href={`/profile/${user.id}`}>
+        <Link href={`../profile/${user.id}`}>
           <Image
             src={user.imageUrl}
             alt={`@${user.firstName}'s profile picture`}
