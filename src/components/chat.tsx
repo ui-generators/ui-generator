@@ -36,7 +36,7 @@ const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: 
   const { userId, isLoaded } = useAuth();
 
   // Check if the user is logged in
-  if (!isLoaded) {
+  if (!userId) {
     return (<><div>404 Error</div></>)
   }
 
@@ -100,8 +100,11 @@ const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: 
     // Create a new Blob object representing the response as text/html
     const blob = new Blob([response], { type: "text/html" });
 
+    const query = userInput;
+    
+
     try {
-      const body = { userId, userMessage, blob };
+      const body = { userId, query, code };
       await fetch(`/api/interface`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

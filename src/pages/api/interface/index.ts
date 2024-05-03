@@ -11,10 +11,9 @@ export default async function handle(
   res: NextApiResponse
 ) {
   // Create a new post
-  const { title, content, code } = req.body;
+  const { userId, query, code } = req.body;
 
-  // Get the current user
-  const { userId } = auth();
+
 
   // Check if the user is logged in
   if (!userId) {
@@ -26,7 +25,7 @@ export default async function handle(
   const result = await prisma.interface.create({
     data: {
       authorId: userId,
-      query: content,
+      query: query,
       code: code,
     },
   });

@@ -17,16 +17,17 @@ const ProfileFeed = async (props: { userId: string }) => {
   });
 
   if (!userInterfaces) notFound();
-
+  
   return (
     <>
       <div>
-        {userInterfaces.map((ui) => (
+        {userInterfaces.map((ui, index) => (
           <div key={ui.id}>
-            <h1>Interface</h1>
-            <p>Interface: {ui.query}</p>
-            <p>Author: {ui.authorId}</p>
-            <p>Image: {ui.code}</p>
+            <h2>Interface: {ui.query}</h2>
+            <p>Code: </p>
+            <pre className="language-javascript">
+              <code>{ui.code}</code>
+            </pre>
           </div>
         ))}
       </div>
@@ -37,30 +38,6 @@ const ProfileFeed = async (props: { userId: string }) => {
 const ProfilePage: NextPage<{ username: string }> = async ({ username }) => {
   
     const user = await currentUser();
-
-
-//   useEffect(() => {
-//     fetchUser().then((fetchedUser) => {
-//       setUser(fetchedUser);
-//     });
-//   }, [username]);
-
-//   const fetchUser = async () => {
-//     if (!clerkClient) {
-//       throw new Error("clerkClient is undefined");
-//     }
-
-//     if (!clerkClient.users) {
-//       throw new Error("users is undefined on clerkClient");
-//     }
-
-//     if (!clerkClient.users.getUser) {
-//       throw new Error("getUser is undefined on clerkClient.users");
-//     }
-
-//     const user = await clerkClient.users.getUser(username);
-//     return user;
-//   };
 
   if (!user) {
 

@@ -10,18 +10,17 @@ import Chat from "@/components/chat";
 import { userName, systemName, workerName, Data } from "@/constants/data";
 import { useAppDispatch } from "@/lib/hooks";
 import { addChatHistory } from "@/lib/features/result/chat";
-
-
-
-
+import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 // Define the Home component
 const Home: React.FC = () => {
-
   
+
   // Define the state variables
   const [submitButtonLoading, setSubmitButtonLoading] =
     useState<boolean>(false);
+    const [query, setQuery] = useState<string>("");
   const [code, setCode] = useState<string>("");
   const [url, setUrl] = useState<string>("");
   const [useBootstrap, setUseBootstrap] = useState<boolean>(false);
@@ -29,11 +28,27 @@ const Home: React.FC = () => {
   const resultRef = useRef<HTMLDivElement>(null);
   // Get the dispatch function from Redux store
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
 
+// Get the current user
+  const { userId, isLoaded } = useAuth();
+
+  // Check if the user is logged in
+  if (!userId) {
+    return (
+      <>
+        <div>404 Error</div>
+      </>
+    );
+  }
 
   // Define the submit handler for the form
   const handleSubmit = async (formInput: FormInput): Promise<void> => {
+
+    // Set the query state based on the form input
+    setQuery(formInput.content);
+
     // Update the useBootstrap state based on the form input
     setUseBootstrap(formInput.useBootstrap == "yes");
 
@@ -54,6 +69,19 @@ const Home: React.FC = () => {
     // Create a new Blob object representing the base code as text/html
     const blob = new Blob([baseCode], { type: "text/html" });
     const url = URL.createObjectURL(blob);
+
+    try {
+      const body = { userId, query, code };
+      await fetch(`/api/interface`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      router.push("/");
+    } catch (error) {
+      console.error(error);
+    }
 
     // Create the chat history entries for the system, user, and worker
 
@@ -113,7 +141,6 @@ const Home: React.FC = () => {
   // Render the component
   return (
     <div>
-      
       <Form onSubmit={handleSubmit} submitButtonLoading={submitButtonLoading} />
       {code.length > 0 && <Result ref={resultRef} code={code} url={url} />}
       {code.length > 0 && (
