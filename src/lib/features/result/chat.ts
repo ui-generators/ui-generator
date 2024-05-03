@@ -1,9 +1,9 @@
 // Reference: https://redux.js.org/tutorials/essentials/part-2-app-structure
-import { createSlice } from '@reduxjs/toolkit'
-import { Data } from '@/constants/data';
+import { createSlice } from "@reduxjs/toolkit";
+import { Data } from "@/constants/data";
 
 export const chatHistorySlice = createSlice({
-    name: 'chatHistory',
+    name: "chatHistory",
     initialState: {
         chatHistory: [] as Data[],
     },

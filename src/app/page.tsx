@@ -1,4 +1,4 @@
-"use client";
+
 
 import React, { useState } from 'react';
 import StoreProvider from './StoreProvider';
@@ -7,16 +7,19 @@ import P5Wrapper from '../components/p5Wrapper';
 import Link from "next/link";
 import Image from "next/image";
 import router from "next/router";
-import { useUser, UserButton, SignOutButton, SignInButton } from "@clerk/nextjs";
+// import { useUser, UserButton, SignOutButton, SignInButton } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
+import { SignInButton } from '@clerk/nextjs';
 
-const Home: React.FC = () => {
-   const { isLoaded, isSignedIn, user } = useUser();
+const Home: React.FC = async () => {
+   
 
+   const user = await currentUser();
 
-   if (!isLoaded || !isSignedIn) {
+   if (!user) {
      return (
        <>
-         <SignInButton></SignInButton>
+         <SignInButton/>
        </>
      );
    }

@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import Form, { FormInput } from '@/components/form';
-import { getSystemPrompt, getWebpagePrompt } from '@/app/prompt';
-import { client } from '@/constants/api';
-import P5Wrapper from '../components/p5Wrapper';
-import Result from '@/components/result';
-import Chat from '@/components/chat';
-import { userName, systemName, workerName, Data } from '@/constants/data';
-import { useAppDispatch } from '@/lib/hooks';
-import { addChatHistory } from '@/lib/features/result/chat';
+import React, { useState, useRef, useEffect } from "react";
+import Form, { FormInput } from "@/components/form";
+import { getSystemPrompt, getWebpagePrompt } from "@/app/prompt";
+import { client } from "@/constants/api";
+import P5Wrapper from "../components/p5Wrapper";
+import Result from "@/components/result";
+import Chat from "@/components/chat";
+import { userName, systemName, workerName, Data } from "@/constants/data";
+import { useAppDispatch } from "@/lib/hooks";
+import { addChatHistory } from "@/lib/features/result/chat";
 
 
 

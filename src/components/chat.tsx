@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FormEvent, useRef } from 'react';
+import React, { useState, useEffect, FormEvent } from "react";
 import {
     Stack, IStackTokens, TextField, DefaultButton, PrimaryButton,
     CommandBarButton,
@@ -16,7 +16,7 @@ const chatWindowStyle = {
     width: "500px",
     height: "800px",
     backgroundColor: "lightgray",
-    border: '1px solid #000',
+    border: "1px solid #000",
     overflow: "scroll",
 };
 
