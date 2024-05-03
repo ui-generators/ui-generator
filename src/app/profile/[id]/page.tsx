@@ -1,12 +1,14 @@
+
+
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import { Clerk } from "@clerk/backend";
-import { clerkClient } from "@clerk/nextjs";
-import { User } from "@clerk/nextjs/api";
+import { useClerk, useUser } from "@clerk/nextjs";
 import { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { use, useEffect, useState } from "react";
+import { Router, useRouter } from "next/router";
 
 const ProfileFeed = async (props: { userId: string }) => {
   const id = props.userId;
@@ -32,36 +34,37 @@ const ProfileFeed = async (props: { userId: string }) => {
   );
 };
 
-const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
-  const [user, setUser] = useState<User>();
+const ProfilePage: NextPage<{ username: string }> = async ({ username }) => {
+  
+    const user = await currentUser();
 
-const clerkClient = new Clerk("frontend_xxx");
 
-  useEffect(() => { 
-    fetchUser().then((fetchedUser) => {
-      setUser(fetchedUser);
-    });
-  }, [username]);
+//   useEffect(() => {
+//     fetchUser().then((fetchedUser) => {
+//       setUser(fetchedUser);
+//     });
+//   }, [username]);
 
-  const fetchUser = async () => {
-    if (!clerkClient) {
-      throw new Error("clerkClient is undefined");
-    }
+//   const fetchUser = async () => {
+//     if (!clerkClient) {
+//       throw new Error("clerkClient is undefined");
+//     }
 
-    if (!clerkClient.users) {
-      throw new Error("users is undefined on clerkClient");
-    }
+//     if (!clerkClient.users) {
+//       throw new Error("users is undefined on clerkClient");
+//     }
 
-    if (!clerkClient.users.getUser) {
-      throw new Error("getUser is undefined on clerkClient.users");
-    }
-    
-    const user = await clerkClient.users.getUser(username);
-    return user;
-  };
+//     if (!clerkClient.users.getUser) {
+//       throw new Error("getUser is undefined on clerkClient.users");
+//     }
+
+//     const user = await clerkClient.users.getUser(username);
+//     return user;
+//   };
 
   if (!user) {
-    return <div>404 Error</div>;
+
+    return <div>Loading...</div>;
   }
 
   return (

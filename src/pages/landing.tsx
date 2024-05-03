@@ -10,14 +10,15 @@ import Chat from '@/components/chat';
 import { userName, systemName, workerName, Data } from '@/constants/data';
 import { useAppDispatch } from '@/lib/hooks';
 import { addChatHistory } from '@/lib/features/result/chat';
-import { useUser, UserButton, SignOutButton } from "@clerk/nextjs";
-import Link from 'next/link';
-import Image from 'next/image';
+
+
+
+
 
 // Define the Home component
 const Home: React.FC = () => {
 
-   const { isLoaded, isSignedIn, user } = useUser();
+  
   // Define the state variables
   const [submitButtonLoading, setSubmitButtonLoading] =
     useState<boolean>(false);
@@ -109,32 +110,10 @@ const Home: React.FC = () => {
     }
   }, [code]);
 
-  if (!isLoaded || !isSignedIn) {
-    return (<><div>404 Error</div></>);
-  }
-
-
   // Render the component
   return (
     <div>
-      <div className="pr-2 w-10 h-auto relative inline-block cursor-pointer">
-        <Link href={`../profile/${user.id}`}>
-          <Image
-            src={user.imageUrl}
-            alt={`@${user.firstName}'s profile picture`}
-            className="h-14 w-14 rounded-full"
-            width={56}
-            height={56}
-          />
-        </Link>
-        {/* <div className={styles.dropdownMenu}>
-          <SignOutButton>
-            <button className={styles.dropbtn} onClick={handleSignOut}>
-              Sign out
-            </button>
-          </SignOutButton>
-        </div> */}
-      </div>
+      
       <Form onSubmit={handleSubmit} submitButtonLoading={submitButtonLoading} />
       {code.length > 0 && <Result ref={resultRef} code={code} url={url} />}
       {code.length > 0 && (
