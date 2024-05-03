@@ -8,8 +8,9 @@ import { client } from '@/constants/api';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { addChatHistory } from '@/lib/features/result/chat';
 import { getSystemPrompt } from '@/app/prompt';
-import { auth } from '@clerk/nextjs/server';
+import { useAuth } from '@clerk/nextjs';
 import { useRouter } from "next/navigation";
+
 
 // Define styles for the chat window
 const chatWindowStyle = {
@@ -32,10 +33,10 @@ const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: 
   const router = useRouter();
 
   // Get the current user
-  const { userId } = auth();
+  const { userId, isLoaded } = useAuth();
 
   // Check if the user is logged in
-  if (!userId) {
+  if (!isLoaded) {
     return (<><div>404 Error</div></>)
   }
 
