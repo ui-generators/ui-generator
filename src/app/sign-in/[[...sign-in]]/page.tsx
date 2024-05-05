@@ -1,5 +1,4 @@
 import { SignIn } from "@clerk/nextjs";
-import { dark, neobrutalism, shadesOfPurple } from "@clerk/themes";
 import styles from "./styles.module.css";
 
 /**
@@ -7,19 +6,19 @@ import styles from "./styles.module.css";
  * @returns The sign-in page component.
  */
 export default function Page() {
-  return (
-    <div className={styles.mainContainer}>
-      <div className={styles.loginForm}>
-        <h1 className={styles.welcomeMessage}>UI Generator</h1>
-        <div className={styles.googleButton}>
-          <SignIn />
-        </div>
+    return (
+        <div className={styles.mainContainer}>
+            <div className={styles.loginForm}>
+                <h1 className={styles.welcomeMessage}>UI Generator</h1>
+                <div className={styles.googleButton}>
+                    <SignIn />
+                </div>
 
-        <h1 className={styles.teaseMessage}>
+                <h1 className={styles.teaseMessage}>
           Creating interfaces that excite, one prompt at a time.
-        </h1>
-      </div>
-    </div>
-  );
+                </h1>
+            </div>
+        </div>
+    );
 }
 

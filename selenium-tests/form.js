@@ -8,7 +8,9 @@ const formTests = async (driver) => {
     // Page title
     const pageTitleLabel = await driver.findElement(By.xpath("//label[text()='Page Title']"));
     const pageTitleInputField = await pageTitleLabel.getAttribute("for");
+    // console.log("pageTitleInputField", pageTitleInputField);
     const pageTitleInput = await driver.findElement(By.id(pageTitleInputField));
+    // console.log("pageTitleInput", pageTitleInput);
     await pageTitleInput.sendKeys("My Page Title");
 
     // Color scheme preferences
@@ -19,6 +21,7 @@ const formTests = async (driver) => {
     await colorSchemeSelect.selectByVisibleText("Light");
     const selectedOption = await colorSchemeSelect.getFirstSelectedOption();
     if (selectedOption == null) {
+        // console.log("selectedOption is null");
         throw new Error("Cannot get first select option for color scheme preference");
     }
     const selectedText = await selectedOption.getText();
@@ -50,6 +53,7 @@ const formTests = async (driver) => {
     await usageSelect.selectByVisibleText("Personal Web Page");
     const selectedUsageOption = await usageSelect.getAllSelectedOptions();
     if (selectedUsageOption == null) {
+        // console.log("selectedUsageOption is null");
         throw new Error("Cannot get all select options for usage");
     }
     const selectedUsageText = await selectedUsageOption[1].getText();
@@ -64,6 +68,7 @@ const formTests = async (driver) => {
     await bootstrapSelect.selectByVisibleText("Yes");
     const selectedBootstrapOption = await bootstrapSelect.getFirstSelectedOption();
     if (selectedBootstrapOption == null) {
+        // console.log("selectedBootstrapOption is null");
         throw new Error("Cannot get first select options for bootstrap");
     }
     const selectedBootstrapText = await selectedBootstrapOption.getText();

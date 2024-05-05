@@ -1,10 +1,8 @@
-import { useEffect } from 'react';
-//import p5 from 'p5';
+import { useEffect } from "react";
+import p5 from "p5";
 
 const P5Component = () => {
     useEffect(() => {
-
-        const p5 = require('p5');
         const Sketch = (p5) => {
             let angleOffsets = [];
             let angleVelocities = [];
@@ -17,7 +15,7 @@ const P5Component = () => {
 
             p5.setup = () => {
                 p5.createCanvas(p5.windowWidth, 200);
-                p5.textFont('Helvetica');
+                p5.textFont("Helvetica");
                 p5.textAlign(p5.CENTER, p5.CENTER);
                 letterSpacing = p5.width / (textContent.length * 1.3); // Update spacing when resized
                 p5.textSize(p5.width / 15); // Adjust font size when window is resized
@@ -78,7 +76,7 @@ const P5Component = () => {
 
     }, []);
 
-    return <div id="p5-canvas" />;;
+    return <div id="p5-canvas" />;
 };
 
 export default P5Component;

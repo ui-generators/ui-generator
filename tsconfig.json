@@ -34,7 +34,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/components/p5Component.js"
-, "selenium-tests/frontend_test.js", "selenium-tests/form.mjs", "selenium-tests/main.mjs"  ],
+, "selenium-tests/frontend_test.js", "selenium-tests/form.js", "selenium-tests/main.js"  ],
   "exclude": [
     "node_modules"
   ]

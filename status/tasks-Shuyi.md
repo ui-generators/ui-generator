@@ -9,4 +9,4 @@ Frontend development (done by myself)
 6. Code styling for the repo
 7. Enhanced the form developed by Brian Sutioso
 8. Frontend tests with selenium-webdriver (in progress)
-Final Presentation slides (mostly written by myself)
+Final Presentation slides (mostly written by myself, demo video is created by Liming (Nolan) Chen)
