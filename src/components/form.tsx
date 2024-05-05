@@ -12,6 +12,7 @@ export interface FormInput {
 }
 
 // basic form
+// eslint-disable-next-line no-unused-vars
 const Form: React.FC<{ onSubmit: (formInput: FormInput) => void, submitButtonLoading: boolean }> = ({ onSubmit, submitButtonLoading }) => {
     const [pageTitle, setPageTitle] = useState("");
     const [colorScheme, setColorScheme] = useState("");
@@ -40,7 +41,8 @@ const Form: React.FC<{ onSubmit: (formInput: FormInput) => void, submitButtonLoa
     const stackStyles: IStackStyles = { root: { width: "100%", maxWidth: 950, margin: "0 auto", padding: "20px", } };
 
     const handleGenerateCode = (): void => {
-        onSubmit({ pageTitle, colorScheme, layoutStructure, content, usage, additionalInfo, useBootstrap });
+        const formInput: FormInput = { pageTitle, colorScheme, layoutStructure, content, usage, additionalInfo, useBootstrap };
+        onSubmit(formInput);
     };
 
     return (
