@@ -27,10 +27,20 @@ const formTests = async (driver) => {
         }
 
         // Find elements of the chat window
-        await driver.findElement(By.xpath("//button[span/span/span[text()='Open Chat']]"));
-        await driver.findElement(By.xpath("//div[contains(@class, 'ms-TextField-fieldGroup')]"));
-        await driver.findElement(By.xpath("//button[.='Enter']"));
+        const openChatButton = await driver.findElement(By.xpath("//button[span/span/span[text()='Open Chat']]"));
+        const textBox = await driver.findElement(By.xpath("//textarea[contains(@class, 'ms-TextField--unresizable')]"));
+        const enterButton = await driver.findElement(By.xpath("//button[.='Enter']"));
         await driver.findElement(By.xpath("//button[.='Clear']"));
+
+        await textBox.sendKeys("Test message...");
+        await enterButton.click();
+        await openChatButton.click();
+        
+        const refreshedPageElement = await driver.findElement(By.css("body"));
+        const refreshedPageContent = await refreshedPageElement.getText();
+        if (refreshedPageContent.includes("Test message...")) {
+            console.log("Found the message sent");
+        }
 
         console.log("Chat window is found");
     } catch (error) {

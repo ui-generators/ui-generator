@@ -57,7 +57,7 @@ const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: 
 
     // Define the event handler for the enter button click event
     const onClickEnter = async () => {
-    // Create a user message object
+        // Create a user message object
         const userMessage: Data = {
             sender: userName,
             message: userInput,
@@ -169,8 +169,6 @@ const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: 
                                 const message = item?.message;
                                 if (sender?.length > 0 && message?.length > 0) {
                                     return (
-
-                    
                                         <Stack key={`message-${index}`}>
                                             <div style={{ fontWeight: "bold", marginBottom: "15px" }}>
                                                 {sender}
