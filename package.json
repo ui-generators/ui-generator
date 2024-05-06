@@ -9,7 +9,7 @@
     "start": "next start",
     "prisma:generate": "prisma generate",
     "lint": "eslint . --ext .ts,.tsx",
-    "tests": "node selenium-tests/main.mjs",
+    "tests": "node selenium-tests/main.js",
     "unit-test": "jest"
   },
   "dependencies": {
