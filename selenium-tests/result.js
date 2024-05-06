@@ -22,7 +22,7 @@ const formTests = async (driver) => {
 
         const pageElement = await driver.findElement(By.css("body"));
         const pageContent = await pageElement.getText();
-        if (pageContent.includes("<html>")) {
+        if (pageContent.includes("<html lang=\"en\">")) {
             console.log("Found HTML code");
         }
 
