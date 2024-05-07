@@ -21,6 +21,43 @@ const Form: React.FC<{ onSubmit: (formInput: FormInput) => void, submitButtonLoa
     const [usage, setUsage] = useState("");
     const [additionalInfo, setAdditionalInfo] = useState("");
     const [useBootstrap, setUseBootstrap] = useState("use-bootstrap");
+    const [errors, setErrors] = useState({
+        pageTitle: '',
+        layoutStructure: '',
+        content: '',
+    });
+
+    const validateForm = () => {
+        let isValid = true;
+        let newErrors = {
+            pageTitle: '',
+            layoutStructure: '',
+            content: '',
+        };
+
+        if (!pageTitle) {
+            newErrors.pageTitle = "Page title is required.";
+            isValid = false;
+        }
+        if (!layoutStructure) {
+            newErrors.layoutStructure = "Layout structure is required.";
+            isValid = false;
+        }
+        if (!content) {
+            newErrors.content = "Content is required.";
+            isValid = false;
+        }
+
+        setErrors(newErrors);
+        return isValid;
+    };
+
+    const handleGenerateCode = (): void => {
+        if (validateForm()) {
+            const formInput: FormInput = { pageTitle, colorScheme, layoutStructure, content, usage, additionalInfo, useBootstrap };
+            onSubmit(formInput);
+        }
+    };
 
     const colorSchemeOptions: IDropdownOption[] = [
         { key: "light", text: "Light" },
@@ -38,16 +75,16 @@ const Form: React.FC<{ onSubmit: (formInput: FormInput) => void, submitButtonLoa
     ];
 
     const stackTokens: IStackTokens = { childrenGap: 20 };
-    const stackStyles: IStackStyles = { root: { width: "100%", maxWidth: 950, margin: "0 auto", padding: "20px", } };
-
-    const handleGenerateCode = (): void => {
-        const formInput: FormInput = { pageTitle, colorScheme, layoutStructure, content, usage, additionalInfo, useBootstrap };
-        onSubmit(formInput);
-    };
+    const stackStyles: IStackStyles = { root: { width: "100%", maxWidth: 950, margin: "0 auto", padding: "20px" } };
 
     return (
         <Stack tokens={stackTokens} styles={stackStyles}>
-            <TextField label="Page Title" value={pageTitle} onChange={(_, newValue) => setPageTitle(newValue || "")} />
+            <TextField
+                label="Page Title"
+                value={pageTitle}
+                onChange={(_, newValue) => setPageTitle(newValue || "")}
+                errorMessage={errors.pageTitle}
+            />
             <Dropdown
                 label="Color Scheme Preferences"
                 selectedKey={colorScheme}
@@ -59,6 +96,7 @@ const Form: React.FC<{ onSubmit: (formInput: FormInput) => void, submitButtonLoa
                 label="Layout Structure & Sections"
                 value={layoutStructure}
                 onChange={(_, newValue) => setLayoutStructure(newValue || "")}
+                errorMessage={errors.layoutStructure}
             />
             <TextField
                 label="Content"
@@ -66,6 +104,7 @@ const Form: React.FC<{ onSubmit: (formInput: FormInput) => void, submitButtonLoa
                 rows={3}
                 value={content}
                 onChange={(_, newValue) => setContent(newValue || "")}
+                errorMessage={errors.content}
             />
             <Dropdown
                 label="Usage"
@@ -88,7 +127,12 @@ const Form: React.FC<{ onSubmit: (formInput: FormInput) => void, submitButtonLoa
                 value={additionalInfo}
                 onChange={(_, newValue) => setAdditionalInfo(newValue || "")}
             />
-            <PrimaryButton text={submitButtonLoading ? "Loading..." : "Generate Code"} onClick={submitButtonLoading ? () => {} : handleGenerateCode} style={{ marginTop: "20px" }} />
+            <PrimaryButton
+                text={submitButtonLoading ? "Loading..." : "Generate Code"}
+                onClick={submitButtonLoading ? () => {} : handleGenerateCode}
+                disabled={submitButtonLoading}
+                style={{ marginTop: "20px" }}
+            />
         </Stack>
     );
 };
