@@ -1,6 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 
+
+// Guidance from https://github.com/prisma/prisma-examples/tree/latest/typescript/rest-nextjs-api-routes/src
+
 export default async function handle(
     req: NextApiRequest,
     res: NextApiResponse
