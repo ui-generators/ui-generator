@@ -3,7 +3,7 @@ import prisma from "../../../lib/prisma";
 
 
 
-// Guidance from https://github.com/prisma/prisma-examples/tree/latest/typescript/rest-nextjs-api-routes/src
+// Adapted from https://github.com/prisma/prisma-examples/blob/latest/typescript/rest-nextjs-api-routes/src/pages/api/post/index.ts
 
 export default async function handle(
     req: NextApiRequest,

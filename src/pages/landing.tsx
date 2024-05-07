@@ -45,89 +45,89 @@ const Home: React.FC = () => {
 
     // Define the submit handler for the form
     const handleSubmit = async (formInput: FormInput): Promise<void> => {
+      // Set the query state based on the form input
+      setQuery(formInput.content);
 
-        // Set the query state based on the form input
-        setQuery(formInput.content);
+      // Update the useBootstrap state based on the form input
+      setUseBootstrap(formInput.useBootstrap == "yes");
 
-        // Update the useBootstrap state based on the form input
-        setUseBootstrap(formInput.useBootstrap == "yes");
+      // Set the submit button loading state
+      setSubmitButtonLoading(true);
 
-        // Set the submit button loading state
-        setSubmitButtonLoading(true);
+      // Get the system prompt based on whether Bootstrap is used
+      const systemPrompt = getSystemPrompt(formInput.useBootstrap == "yes");
+      // Register a new user session with the API client
+      await client.registerUserSession();
+      // Send the initial prompt to the API client
+      await client.initialPrompt(systemPrompt);
 
-        // Get the system prompt based on whether Bootstrap is used
-        const systemPrompt = getSystemPrompt(formInput.useBootstrap == "yes");
-        // Register a new user session with the API client
-        await client.registerUserSession();
-        // Send the initial prompt to the API client
-        await client.initialPrompt(systemPrompt);
+      // Send the webpage prompt to the API client and get the base code
+      const webPagePrompt = getWebpagePrompt(formInput);
+      const baseCode = await client.iterativePrompt(webPagePrompt);
 
-        // Send the webpage prompt to the API client and get the base code
-        const webPagePrompt = getWebpagePrompt(formInput);
-        const baseCode = await client.iterativePrompt(webPagePrompt);
+      // Create a new Blob object representing the base code as text/html
+      const blob = new Blob([baseCode], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
 
-        // Create a new Blob object representing the base code as text/html
-        const blob = new Blob([baseCode], { type: "text/html" });
-        const url = URL.createObjectURL(blob);
+      // Adapted from https://github.com/prisma/prisma-examples/blob/latest/typescript/rest-nextjs-api-routes/src/app/create/page.tsx
+      try {
+        const body = { userId, query, code };
+        await fetch("/api/interface", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
 
-        try {
-            const body = { userId, query, code };
-            await fetch("/api/interface", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body),
-            });
+        router.push("/");
+      } catch (error) {
+        console.error(error);
+      }
 
-            router.push("/");
-        } catch (error) {
-            console.error(error);
-        }
+      // Create the chat history entries for the system, user, and worker
 
-        // Create the chat history entries for the system, user, and worker
+      // Create a system message object
+      const systemMessage: Data = {
+        sender: systemName,
+        message: systemPrompt,
+      };
+      // Create a payload object for the system message
+      const systemPayload = {
+        chatMessage: systemMessage,
+      };
 
-        // Create a system message object
-        const systemMessage: Data = {
-            sender: systemName,
-            message: systemPrompt,
-        };
-        // Create a payload object for the system message
-        const systemPayload = {
-            chatMessage: systemMessage,
-        };
+      // Create a user message object
+      const userMessage: Data = {
+        sender: userName,
+        message: webPagePrompt,
+      };
 
-        // Create a user message object
-        const userMessage: Data = {
-            sender: userName,
-            message: webPagePrompt,
-        };
+      // Create a payload object for the user message
+      const userPayload = {
+        chatMessage: userMessage,
+      };
 
-        // Create a payload object for the user message
-        const userPayload = {
-            chatMessage: userMessage,
-        };
+      // Create a worker message object
+      const workerMessage: Data = {
+        sender: workerName,
+        message: baseCode,
+      };
 
-        // Create a worker message object
-        const workerMessage: Data = {
-            sender: workerName,
-            message: baseCode,
-        };
+      // Create a payload object for the worker message
+      const workerPayload = {
+        chatMessage: workerMessage,
+      };
 
-        // Create a payload object for the worker message
-        const workerPayload = {
-            chatMessage: workerMessage,
-        };
+      // Dispatch actions to add the system, user, and worker messages to the chat history
+      dispatch(addChatHistory(systemPayload));
+      dispatch(addChatHistory(userPayload));
+      dispatch(addChatHistory(workerPayload));
 
-        // Dispatch actions to add the system, user, and worker messages to the chat history
-        dispatch(addChatHistory(systemPayload));
-        dispatch(addChatHistory(userPayload));
-        dispatch(addChatHistory(workerPayload));
+      // Update the code and url state with the base code and url
+      setCode(baseCode);
+      setUrl(url);
 
-        // Update the code and url state with the base code and url
-        setCode(baseCode);
-        setUrl(url);
-
-        // Set the submit button loading state
-        setSubmitButtonLoading(false);
+      // Set the submit button loading state
+      setSubmitButtonLoading(false);
     };
 
     // Define a useEffect hook that scrolls to the result div when the code changes

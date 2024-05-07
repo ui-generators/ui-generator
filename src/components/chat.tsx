@@ -57,69 +57,70 @@ const Chat: React.FC<{ onChangeCode: (code: string) => void, onChangeUrl: (url: 
 
     // Define the event handler for the enter button click event
     const onClickEnter = async () => {
-        // Create a user message object
-        const userMessage: Data = {
-            sender: userName,
-            message: userInput,
-        };
+      // Create a user message object
+      const userMessage: Data = {
+        sender: userName,
+        message: userInput,
+      };
 
-        // Create a payload object for the user message
-        const userPayload = {
-            chatMessage: userMessage,
-        };
+      // Create a payload object for the user message
+      const userPayload = {
+        chatMessage: userMessage,
+      };
 
-        // Dispatch an action to add the user message to the chat history
-        dispatch(addChatHistory(userPayload));
-        // Set the enter button to loading state
-        setEnterLoading(true);
-        // Clear the user input
-        setUserInput(""); // Clear user input
+      // Dispatch an action to add the user message to the chat history
+      dispatch(addChatHistory(userPayload));
+      // Set the enter button to loading state
+      setEnterLoading(true);
+      // Clear the user input
+      setUserInput(""); // Clear user input
 
-        // Send the system prompt, code, and user input to the API client and get the response
-        const response = await client.iterativePrompt(
-            getSystemPrompt(useBootstrap) + code + userInput
-        );
-        // Set the enter button to non-loading state
-        setEnterLoading(false);
+      // Send the system prompt, code, and user input to the API client and get the response
+      const response = await client.iterativePrompt(
+        getSystemPrompt(useBootstrap) + code + userInput
+      );
+      // Set the enter button to non-loading state
+      setEnterLoading(false);
 
-        // Create a worker message object
-        const workerMessage: Data = {
-            sender: workerName,
-            message: response,
-        };
+      // Create a worker message object
+      const workerMessage: Data = {
+        sender: workerName,
+        message: response,
+      };
 
-        // Create a payload object for the worker message
-        const workerPayload = {
-            chatMessage: workerMessage,
-        };
+      // Create a payload object for the worker message
+      const workerPayload = {
+        chatMessage: workerMessage,
+      };
 
-        // Dispatch an action to add the worker message to the chat history
-        dispatch(addChatHistory(workerPayload));
-        // Update the code with the response
-        onChangeCode(response);
+      // Dispatch an action to add the worker message to the chat history
+      dispatch(addChatHistory(workerPayload));
+      // Update the code with the response
+      onChangeCode(response);
 
-        // Create a new Blob object representing the response as text/html
-        const blob = new Blob([response], { type: "text/html" });
+      // Create a new Blob object representing the response as text/html
+      const blob = new Blob([response], { type: "text/html" });
 
-        const query = userInput;
-    
-        try {
-            const body = { userId, query, code };
-            await fetch("/api/interface", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body),
-            });
+      const query = userInput;
 
-            router.push("/");
-        } catch (error) {
-            console.error(error);
-        }
-    
-        // Create a URL representing the Blob object
-        const url = URL.createObjectURL(blob);
-        // Update the url with the new URL
-        onChangeUrl(url);
+      // Adapted from https://github.com/prisma/prisma-examples/blob/latest/typescript/rest-nextjs-api-routes/src/app/create/page.tsx
+      try {
+        const body = { userId, query, code };
+        await fetch("/api/interface", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+
+        router.push("/");
+      } catch (error) {
+        console.error(error);
+      }
+
+      // Create a URL representing the Blob object
+      const url = URL.createObjectURL(blob);
+      // Update the url with the new URL
+      onChangeUrl(url);
     };
 
     // Define the event handler for the clear button click event
