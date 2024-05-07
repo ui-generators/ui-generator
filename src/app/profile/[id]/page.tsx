@@ -26,13 +26,15 @@ const ProfileFeed = async (props: { userId: string }) => {
         <>
             <div>
                 {userInterfaces.map((ui: Interface) => (
-                    <div key={ui.id}>
-                        <h2>Interface: {ui.query}</h2>
-                        <p>Code: </p>
-                        <pre className="language-javascript">
-                            <code>{ui.code}</code>
-                        </pre>
-                    </div>
+                    (ui.query && ui.code) && (
+                        <div key={ui.id}>
+                            <h2>Interface: {ui.query}</h2>
+                            <p>Code: </p>
+                            <pre className="language-javascript">
+                                <code>{ui.code}</code>
+                            </pre>
+                        </div>
+                    )
                 ))}
             </div>
         </>
